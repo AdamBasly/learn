@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Benutzerkonto erstellen</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .container h2 {
+            margin-bottom: 20px;
+        }
+        .container input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .container button:hover {
+            background-color: #0056b3;
+        }
+        .success {
+            color: green;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Benutzerkonto erstellen</h2>
+        <form onsubmit="return createAccount()">
+            <input type="text" id="username" placeholder="Benutzername" required>
+            <input type="password" id="password" placeholder="Passwort" required>
+            <button type="submit">Konto erstellen</button>
+        </form>
+        <p id="message"></p>
+    </div>
+    <script>
+        function notify(message) {
+            if (Notification.permission !== "granted") {
+                Notification.requestPermission().then(function(permission) {
+                    if (permission === "granted") {
+                        new Notification('Benachrichtigung', {
+                            body: message,
+                        });
+                    }
+                });
+            } else {
+                new Notification('Benachrichtigung', {
+                    body: message,
+                });
+            }
+        }
+
+        function createAccount() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const message = document.getElementById('message');
+
+            if (username && password) {
+                let users = JSON.parse(localStorage.getItem('users')) || {};
+                if (users[username]) {
+                    message.textContent = 'Benutzername existiert bereits. Bitte wählen Sie einen anderen.';
+                    message.className = 'error';
+                } else {
+                    users[username] = password;
+                    localStorage.setItem('users', JSON.stringify(users));
+                    notify("Konto erfolgreich erstellt!");
+                    message.textContent = 'Konto erfolgreich erstellt. <a href="index.html">Zurück zur Anmeldeseite</a>';
+                    message.className = 'success';
+                }
+            } else {
+                message.textContent = 'Benutzername und Passwort dürfen nicht leer sein.';
+                message.className = 'error';
+            }
+            return false; // Verhindert das Absenden des Formulars
+        }
+
+        // Nach Benutzerberechtigung für Benachrichtigungen fragen
+        if (Notification.permission !== "granted") {
+            Notification.requestPermission();
+        }
+    </script>
+</body>
+</html>

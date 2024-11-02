@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anmeldeseite</title>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .container h2 {
+            margin-bottom: 20px;
+        }
+        .container input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .container button {
+            width: 100%;
+            padding: 10px;
+            
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .container button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Anmelden</h2><a href="signup.html" class="" style = "background-color: red;"><button type="submit">Noch kein Konto?</button></a>
+        <form onsubmit="return validateForm()">
+            <input type="text" id="username" placeholder="Benutzername" required>
+            <input type="password" id="password" placeholder="Passwort" required>
+            <button type="submit" style="background-color:blue;">Anmelden</button>
+        </form>
+        <p id="message"></p>
+    </div>
+    <script>
+        function validateForm() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const message = document.getElementById('message');
+
+            let users = JSON.parse(localStorage.getItem('users')) || {};
+            if (users[username] && users[username] === password) {
+                window.location.href = "./mainlab.html";
+                return false; // Verhindert das Absenden des Formulars
+            } else {
+                message.textContent = 'Ungültiger Benutzername oder Passwort. Bitte versuchen Sie es erneut.';
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>

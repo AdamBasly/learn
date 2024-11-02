@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Websuche</title>
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 50px;
+        }
+        .search-bar {
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+        }
+        .search-bar input {
+            padding: 15px;
+            width: 400px;
+            border: 2px solid #ccc;
+            border-radius: 30px 0 0 30px;
+            outline: none;
+            font-size: 16px;
+        }
+        .search-bar button {
+            padding: 15px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 0 30px 30px 0;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .search-bar button:hover {
+            background-color: #0056b3;
+        }
+        .link-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .link-container a {
+            text-decoration: none;
+            margin: 15px;
+            transition: transform 0.3s;
+        }
+        .link-container a:hover {
+            transform: scale(1.05);
+        }
+        .link-container img {
+            border: 4px solid #bbb;
+            border-radius: 10px;
+            width: 250px;
+            height: 150px;
+            object-fit: cover;
+        }
+        .link-container h1 {
+            background-color: #007BFF;
+            color: white;
+            border: 4px solid #bbb;
+            border-radius: 10px;
+            margin: 10px 0 0;
+            padding: 10px;
+        }
+        .taskbar {
+            width: 100%;
+            background-color: #333;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.5);
+            padding: 10px 0;
+        }
+        .taskbar a {
+            padding: 10px 20px;
+            display: block;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        .taskbar a:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="search-bar">
+            <input type="text" id="query" placeholder="Suche im Web...">
+            <button onclick="searchWeb()">Suchen</button>
+        </div>
+        <div class="link-container">
+            <a id="py" href="./pyexec.html">
+                <img src=".\\img\\OIP.jpeg">
+                <h1>Python Lab</h1>
+            </a>
+            <a id="py" href="https://www.udemy.com">
+                <img src=".\\img\\udemy.jpeg">
+                <h1>UdemyContent</h1>
+            </a>
+            <a id="py" href="https://preply.com/de/home">
+                <img src=".\\img\\preply.jpeg">
+                <h1>Preply</h1>
+            </a>
+            <a id="py" href="https://www.office.com/">
+                <img src=".\\img\\365.jpeg" style="width: 200px; margin-left: 25px;">
+                <h1>Microsoft 365 online</h1>
+            </a>
+            <a id="py" href="https://www.bycs.de/">
+                <img src=".\\img\\bycs.png" style="width: 400px; margin-left: 25px;">
+                <h1>ByCS</h1>
+            </a>
+        </div>
+    </div>
+    <div class="taskbar">
+        <a href="./index.html">Log Out</a>
+        <a href="./pyexec.html">Python Lab</a>
+        <a href="https://www.udemy.com">Udemy</a>
+        <a href="ms-word:ofe|u|https://www.office.com/">Libre Office</a>
+        <a href="admin_authentication.html">Admin control</a>
+    </div>
+    <script>
+        function searchWeb() {
+            const query = document.getElementById("query").value;
+            if (query) {
+                window.open("https://www.google.com/search?q=" + encodeURIComponent(query), "_blank");
+            } else {
+                alert("Bitte geben Sie einen Suchbegriff ein.");
+            }
+        }
+    </script>
+</body>
+</html>
