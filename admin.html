@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin-Seite</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 500px;
+        }
+        .container h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            text-align: center;
+            color: #333;
+        }
+        .user-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .user-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #ccc;
+        }
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+        .edit-btn, .change-password-btn, .delete-btn {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .delete-btn {
+            background-color: #FF0000;
+        }
+        .edit-btn:hover, .change-password-btn:hover, .delete-btn:hover {
+            background-color: #0056b3;
+        }
+        .delete-btn:hover {
+            background-color: #CC0000;
+        }
+        .privacy-status {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .privacy-status.not-accepted {
+            color: #dc3545;
+        }
+        .spanding{
+            color:green;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Admin-Seite</h2>
+        <ul class="user-list" id="userList"></ul>
+    </div>
+    <script>
+        function loadUsers() {
+            const users = JSON.parse(localStorage.getItem('users')) || {};
+            const userList = document.getElementById('userList');
+            userList.innerHTML = '';
+            Object.keys(users).forEach(username => {
+                const user = users[username];
+                const acceptedPrivacy = user.acceptedPrivacy;
+                const acceptedTerms = user.acceptedTerms;
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span class="spanding">${username} - Datenschutzerklärung: ${acceptedPrivacy ? 'Akzeptiert' : 'Nicht akzeptiert'} - AGB: ${acceptedTerms ? 'Akzeptiert' : 'Nicht akzeptiert'}</span>
+                    <div class="actions">
+                        <button class="edit-btn" onclick="editUser('${username}')">Bearbeiten</button>
+                        <button class="change-password-btn" onclick="changePassword('${username}')">Passwort ändern</button>
+                        <button class="delete-btn" onclick="deleteUser('${username}')">Löschen</button>
+                    </div>
+                `;
+                userList.appendChild(li);
+            });
+        }
+
+        function deleteUser(username) {
+            const users = JSON.parse(localStorage.getItem('users')) || {};
+            delete users[username];
+            localStorage.setItem('users', JSON.stringify(users));
+            loadUsers();
+        }
+
+        function editUser(username) {
+            const newUsername = prompt('Neuen Benutzernamen eingeben:', username);
+            if (newUsername && newUsername !== username) {
+                const users = JSON.parse(localStorage.getItem('users')) || {};
+                if (users[newUsername]) {
+                    alert('Benutzername existiert bereits. Bitte wählen Sie einen anderen.');
+                } else {
+                    users[newUsername] = users[username];
+                    delete users[username];
+                    localStorage.setItem('users', JSON.stringify(users));
+                    loadUsers();
+                }
+            }
+        }
+
+        function changePassword(username) {
+            const newPassword = prompt('Neues Passwort eingeben:');
+            if (newPassword) {
+                const users = JSON.parse(localStorage.getItem('users')) || {};
+                users[username].password = newPassword;
+                localStorage.setItem('users', JSON.stringify(users));
+                loadUsers();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadUsers);
+    </script>
+</body>
+</html>

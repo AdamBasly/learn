@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anmeldeseite</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #connection{
+            width: 100%;
+            padding: 15px;
+            background-color: #00ff22;
+            color: rgb(1, 138, 148);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+            text-decoration: none;
+        }
+        #connection:hover {
+            background-color: #54d300;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+        }
+        .container h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+        .container input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .container button {
+            width: 100%;
+            padding: 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+        .container button:hover {
+            background-color: #0056b3;
+        }
+        #message {
+            margin-top: 15px;
+            color: #e74c3c;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Anmelden</h2>
+        <a href="signup.html" id="connection">Noch kein Konto?</a>
+        <br><br>
+        <form onsubmit="return startLogin()">
+            <input type="text" id="username" placeholder="Benutzername" required>
+            <input type="password" id="password" placeholder="Passwort" required>
+            <button type="submit">Anmelden</button>
+        </form>
+        <p id="message"></p>
+    </div>
+
+    <!-- Zwei-Schritt-Authentifizierung -->
+    <div class="container" id="verificationContainer" style="display: none;">
+        <h2>Bestätigungscode</h2>
+        <form onsubmit="return verifyCode()">
+            <input type="text" id="verificationCode" placeholder="Bestätigungscode" required>
+            <button type="submit">Bestätigen</button>
+        </form>
+        <p id="verificationMessage"></p>
+    </div>
+
+    <script>
+        let userEmail = '';
+
+        function sendVerificationCode(email) {
+            const verificationCode = Math.floor(100000 + Math.random() * 900000);
+            localStorage.setItem('verificationCode', verificationCode);
+
+            // Debug: Display code in console
+            console.log(`Verification code: ${verificationCode}`);
+            alert(`Verification code: ${verificationCode}`); // Temporarily use alert for testing
+        }
+
+
+        function startLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const message = document.getElementById('message');
+
+            let users = JSON.parse(localStorage.getItem('users')) || {};
+            if (users[username] && users[username].password === password) {
+                userEmail = users[username].email; // Vorausgesetzt, die E-Mail wird bei der Registrierung gespeichert
+                sendVerificationCode(userEmail);
+                document.querySelector('form').style.display = 'none';
+                document.getElementById('verificationContainer').style.display = 'block';
+                return false; // Verhindert das Absenden des Formulars
+            } else {
+                message.textContent = 'Ungültiger Benutzername oder Passwort. Bitte versuchen Sie es erneut.';
+                return false;
+            }
+        }
+
+        function verifyCode() {
+            const enteredCode = document.getElementById('verificationCode').value;
+            const storedCode = localStorage.getItem('verificationCode');
+            const verificationMessage = document.getElementById('verificationMessage');
+
+            if (enteredCode === storedCode) {
+                window.location.href = "./mainlab.html";
+                return false; // Verhindert das Absenden des Formulars
+            } else {
+                verificationMessage.textContent = 'Ungültiger Bestätigungscode. Bitte versuchen Sie es erneut.';
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+.minecraft {
+    background-color: #4caf50;
+    border: 2px solid #4caf50;
+    border-radius: 10px;
+    padding: 15px;
+    transition: transform 0.3s;
+    margin: 20px;
+}
+.minecraft:hover {
+    transform: scale(1.05);
+}
+.minecraft h2 {
+    background-color: #ffeb3b;
+    border: 2px solid #ffeb3b;
+    border-radius: 10px;
+    padding: 10px;
+    font-family: 'Comic Sans MS', fantasy;
+}
+.minecraft img {
+    max-width: 100%;
+    border-radius: 10px;
+}
+#MC {
+    text-decoration: none;
+    color: black;
+}

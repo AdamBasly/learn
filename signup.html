@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Benutzerkonto erstellen</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+        }
+        .container h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+        .container input, .container textarea {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .container button {
+            width: 100%;
+            padding: 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+        .container button:hover {
+            background-color: #0056b3;
+        }
+        .container a {
+            display: block;
+            text-decoration: none;
+            background-color: #dc3545;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+        .container a:hover {
+            background-color: #c82333;
+        }
+        .container label {
+            display: block;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        #message {
+            margin-top: 15px;
+            color: #e74c3c;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Benutzerkonto erstellen</h2>
+        <form onsubmit="return createAccount()">
+            <input type="text" id="username" placeholder="Benutzername" required>
+            <input type="password" id="password" placeholder="Passwort" required>
+            <label>
+                <input type="checkbox" id="privacyPolicy" required> Ich akzeptiere die <a href="#">Datenschutzerklärung</a>
+            </label>
+            <label>
+                <input type="checkbox" id="termsOfService" required> Ich akzeptiere die <a href="#">Allgemeinen Geschäftsbedingungen</a>
+            </label>
+            <button type="submit">Konto erstellen</button>
+        </form>
+        <p id="message"></p>
+    </div>
+    <script>
+        function notify(message) {
+            if (Notification.permission !== "granted") {
+                Notification.requestPermission().then(function(permission) {
+                    if (permission === "granted") {
+                        new Notification('Benachrichtigung', {
+                            body: message,
+                        });
+                    }
+                });
+            } else {
+                new Notification('Benachrichtigung', {
+                    body: message,
+                });
+            }
+        }
+
+        function isStrongPassword(password) {
+            const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            return regex.test(password);
+        }
+
+        function createAccount() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const privacyPolicy = document.getElementById('privacyPolicy').checked;
+            const termsOfService = document.getElementById('termsOfService').checked;
+            const message = document.getElementById('message');
+
+            if (!isStrongPassword(password)) {
+                message.textContent = 'Das Passwort muss mindestens 8 Zeichen lang sein und eine Mischung aus Groß- und Kleinbuchstaben, Zahlen und Sonderzeichen enthalten.';
+                message.className = 'error';
+                return false;
+            }
+
+            if (username && password && privacyPolicy && termsOfService) {
+                let users = JSON.parse(localStorage.getItem('users')) || {};
+                if (users[username]) {
+                    message.textContent = 'Benutzername existiert bereits. Bitte wählen Sie einen anderen.';
+                    message.className = 'error';
+                } else {
+                    users[username] = { password: password, acceptedPrivacy: privacyPolicy, acceptedTerms: termsOfService };
+                    localStorage.setItem('users', JSON.stringify(users));
+                    localStorage.setItem('acceptedPrivacy_' + username, privacyPolicy);
+                    localStorage.setItem('acceptedTerms_' + username, termsOfService);
+                    notify("Konto erfolgreich erstellt!");
+                    message.textContent = 'Konto erfolgreich erstellt. <a href="index.html">Zurück zur Anmeldeseite</a>';
+                    message.className = 'success';
+                }
+            } else {
+                message.textContent = 'Bitte alle Felder ausfüllen und die Datenschutzerklärung sowie die Allgemeinen Geschäftsbedingungen akzeptieren.';
+                message.className = 'error';
+            }
+            return false; // Verhindert das Absenden des Formulars
+        }
+
+        if (Notification.permission !== "granted") {
+            Notification.requestPermission();
+        }
+    </script>
+</body>
+</html>
