@@ -14,7 +14,8 @@
             height: 100vh;
             margin: 0;
         }
-        #connection{
+
+        #connection {
             width: 100%;
             padding: 15px;
             background-color: #00ff22;
@@ -27,9 +28,11 @@
             transition: background-color 0.3s;
             text-decoration: none;
         }
-        #connection:hover {
-            background-color: #54d300;
-        }
+
+            #connection:hover {
+                background-color: #54d300;
+            }
+
         .container {
             background-color: #fff;
             padding: 30px;
@@ -38,34 +41,39 @@
             width: 350px;
             text-align: center;
         }
-        .container h2 {
-            margin-bottom: 20px;
-            font-size: 24px;
-            color: #333;
-        }
-        .container input {
-            width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        .container button {
-            width: 100%;
-            padding: 15px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 10px;
-            transition: background-color 0.3s;
-        }
-        .container button:hover {
-            background-color: #0056b3;
-        }
+
+            .container h2 {
+                margin-bottom: 20px;
+                font-size: 24px;
+                color: #333;
+            }
+
+            .container input {
+                width: 100%;
+                padding: 15px;
+                margin: 10px 0;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                font-size: 16px;
+            }
+
+            .container button {
+                width: 100%;
+                padding: 15px;
+                background-color: #007BFF;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+                margin-top: 10px;
+                transition: background-color 0.3s;
+            }
+
+                .container button:hover {
+                    background-color: #0056b3;
+                }
+
         #message {
             margin-top: 15px;
             color: #e74c3c;
@@ -101,13 +109,12 @@
 
         function sendVerificationCode(email) {
             const verificationCode = Math.floor(100000 + Math.random() * 900000);
-            localStorage.setItem('verificationCode', verificationCode);
+            sessionStorage.setItem('verificationCode', verificationCode);
 
             // Debug: Display code in console
             console.log(`Verification code: ${verificationCode}`);
             alert(`Verification code: ${verificationCode}`); // Temporarily use alert for testing
         }
-
 
         function startLogin() {
             const username = document.getElementById('username').value;
@@ -129,10 +136,11 @@
 
         function verifyCode() {
             const enteredCode = document.getElementById('verificationCode').value;
-            const storedCode = localStorage.getItem('verificationCode');
+            const storedCode = sessionStorage.getItem('verificationCode');
             const verificationMessage = document.getElementById('verificationMessage');
 
             if (enteredCode === storedCode) {
+                sessionStorage.setItem('isLoggedIn', 'true'); // Login-Status speichern
                 window.location.href = "./mainlab.html";
                 return false; // Verhindert das Absenden des Formulars
             } else {
