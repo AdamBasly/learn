@@ -14,6 +14,7 @@
             flex-direction: column;
             min-height: 100vh;
         }
+
         .container {
             flex: 1;
             display: flex;
@@ -21,32 +22,37 @@
             align-items: center;
             margin-top: 50px;
         }
+
         .search-bar {
             margin-bottom: 40px;
             display: flex;
             align-items: center;
         }
-        .search-bar input {
-            padding: 15px;
-            width: 400px;
-            border: 2px solid #ccc;
-            border-radius: 30px 0 0 30px;
-            outline: none;
-            font-size: 16px;
-        }
-        .search-bar button {
-            padding: 15px 20px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 0 30px 30px 0;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
-        .search-bar button:hover {
-            background-color: #0056b3;
-        }
+
+            .search-bar input {
+                padding: 15px;
+                width: 400px;
+                border: 2px solid #ccc;
+                border-radius: 30px 0 0 30px;
+                outline: none;
+                font-size: 16px;
+            }
+
+            .search-bar button {
+                padding: 15px 20px;
+                background-color: #007BFF;
+                color: white;
+                border: none;
+                border-radius: 0 30px 30px 0;
+                cursor: pointer;
+                font-size: 16px;
+                transition: background-color 0.3s;
+            }
+
+                .search-bar button:hover {
+                    background-color: #0056b3;
+                }
+
         .link-container {
             display: flex;
             flex-wrap: wrap;
@@ -54,29 +60,34 @@
             margin-bottom: 30px;
             text-align: center;
         }
-        .link-container a {
-            text-decoration: none;
-            margin: 15px;
-            transition: transform 0.3s;
-        }
-        .link-container a:hover {
-            transform: scale(1.05);
-        }
-        .link-container img {
-            border: 4px solid #bbb;
-            border-radius: 10px;
-            width: 250px;
-            height: 150px;
-            object-fit: cover;
-        }
-        .link-container h1 {
-            background-color: #007BFF;
-            color: white;
-            border: 4px solid #bbb;
-            border-radius: 10px;
-            margin: 10px 0 0;
-            padding: 10px;
-        }
+
+            .link-container a {
+                text-decoration: none;
+                margin: 15px;
+                transition: transform 0.3s;
+            }
+
+                .link-container a:hover {
+                    transform: scale(1.05);
+                }
+
+            .link-container img {
+                border: 4px solid #bbb;
+                border-radius: 10px;
+                width: 250px;
+                height: 150px;
+                object-fit: cover;
+            }
+
+            .link-container h1 {
+                background-color: #007BFF;
+                color: white;
+                border: 4px solid #bbb;
+                border-radius: 10px;
+                margin: 10px 0 0;
+                padding: 10px;
+            }
+
         .taskbar {
             width: 100%;
             background-color: #333;
@@ -86,20 +97,41 @@
             box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.5);
             padding: 10px 0;
         }
-        .taskbar a {
-            padding: 10px 20px;
-            display: block;
-            color: white;
-            text-align: center;
-            text-decoration: none;
-            transition: background-color 0.3s;
-        }
-        .taskbar a:hover {
-            background-color: #555;
-        }
+
+            .taskbar a {
+                padding: 10px 20px;
+                display: block;
+                color: white;
+                text-align: center;
+                text-decoration: none;
+                transition: background-color 0.3s;
+            }
+
+                .taskbar a:hover {
+                    background-color: #555;
+                }
     </style>
+    <script>
+        document.addEventListener("DOMContentLoaded",
+            function () {
+            if (sessionStorage.getItem('isLoggedIn') !== 'true') {
+                alert("Sie müssen sich anmelden, um auf diese Seite zugreifen zu können.");
+                window.location.href = "index.html";
+                // Pfad zur Anmeldeseite
+            } 
+    }); 
+    </script>
 </head>
 <body>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                alert("Sie müssen sich anmelden, um auf diese Seite zugreifen zu können.");
+                window.location.href = "index.html";
+            // Pfad zur Anmeldeseite
+        }
+    });
+    </script>
     <div class="container">
         <div class="search-bar">
             <input type="text" id="query" placeholder="Suche im Web...">
