@@ -1,6 +1,6 @@
 Use
 ---------------------------------------
-If you're using this site, please start launching at main.html,
+If you're using this site, please start launching at index.html,
 because there could be errors.
 0.1.01 Changes
 --------------------------------------
