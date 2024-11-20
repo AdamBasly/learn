@@ -17,6 +17,10 @@ cd Path/to/cloned/directory
 
 ./INSTALL.cmd
 
+cd
+
+rm -r learn
+
 or
 
 npm i learnservicerepo
