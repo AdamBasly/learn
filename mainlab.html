@@ -125,7 +125,7 @@
 <body>
     <script>
     document.addEventListener("DOMContentLoaded", function () {
-            if (localStorage.getItem('isLoggedIn') !== 'true') {
+            if (sessionStorage.getItem('isLoggedIn') !== 'true') {
                 alert("Sie müssen sich anmelden, um auf diese Seite zugreifen zu können.");
                 window.location.href = "index.html";
             // Pfad zur Anmeldeseite
