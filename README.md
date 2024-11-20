@@ -28,6 +28,13 @@ use the .exe installer: https://github.com/AdamBasly/learn/blob/2eb2a2e1ea1e54cf
 and click on the download icon
 (Only v1.0.2)
 
+or
+
+use the .deb installer: https://github.com/AdamBasly/learn/blob/ae50b3d74ce3b797059b87d71e212ed5a34b55c3/learnservicesrepo.deb
+
+and click on the download icon
+(Only v1.0.2)
+
 0.1.01 Changes (dev) channel
 --------------------------------------
 Building main architecture of site
