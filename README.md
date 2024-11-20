@@ -1,7 +1,20 @@
 Use
 ---------------------------------------
+Test Project:
+https://adambasly.github.io/learn/
+
 If you're using this site, please start launching at index.html,
 because there could be errors.
+
+Install Guide:
+
+run:
+
+git clone https://github.com/AdamBasly/learn.git
+
+cd Path/to/cloned/directory
+
+./INSTALL.cmd
 
 0.1.01 Changes (dev) channel
 --------------------------------------
