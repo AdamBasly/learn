@@ -37,6 +37,13 @@ and click on the download icon
 
 or
 
+use the .rpm installer: https://github.com/AdamBasly/learn/blob/842e4904a5a7cb2e16c30ca09e80facd077b7fc6/adamb-20241120-2.x86_64.rpm
+
+and click on the download icon
+(Only v1.0.2)
+
+or
+
 echo "deb [trusted=yes] https://apt.fury.io/adambasly/ /" | sudo tee /etc/apt/sources.list.d/gemfury.list
 
 sudo apt update
