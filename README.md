@@ -7,6 +7,7 @@ If you're using this site, please start launching at index.html,
 because there could be errors.
 
 Install Guide:
+--------------------------------------
 
 run:
 
