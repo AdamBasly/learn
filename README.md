@@ -35,6 +35,14 @@ use the .deb installer: https://github.com/AdamBasly/learn/blob/ae50b3d74ce3b797
 and click on the download icon
 (Only v1.0.2)
 
+or
+
+echo "deb [trusted=yes] https://apt.fury.io/adambasly/ /" | sudo tee /etc/apt/sources.list.d/gemfury.list
+
+sudo apt update
+
+sudo apt install adamb
+
 0.1.01 Changes (dev) channel
 --------------------------------------
 Building main architecture of site
