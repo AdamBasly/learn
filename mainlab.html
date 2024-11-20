@@ -112,26 +112,30 @@
                 }
     </style>
     <script>
-        document.addEventListener("DOMContentLoaded",
-            function () {
+        document.addEventListener("DOMContentLoaded", function () {
             if (sessionStorage.getItem('isLoggedIn') !== 'true') {
                 alert("Sie müssen sich anmelden, um auf diese Seite zugreifen zu können.");
-                window.location.href = "index.html";
-                // Pfad zur Anmeldeseite
-            } 
-    }); 
+                window.location.href = "index.html"; // Pfad zur Anmeldeseite
+            } else {
+                // Zeitlimit setzen: 60000 Millisekunden = 60 Sekunden
+                setTimeout(function() {
+                    alert("Zeitlimit erreicht. Sie werden zur Anmeldeseite weitergeleitet.");
+                    window.location.href = "index.html"; // Pfad zur Anmeldeseite
+                }, 360000);
+            }
+        });
+
+        function searchWeb() {
+            const query = document.getElementById("query").value;
+            if (query) {
+                window.open("https://www.google.com/search?q=" + encodeURIComponent(query), "_blank");
+            } else {
+                alert("Bitte geben Sie einen Suchbegriff ein.");
+            }
+        }
     </script>
 </head>
 <body>
-    <script>
-    document.addEventListener("DOMContentLoaded", function () {
-            if (sessionStorage.getItem('isLoggedIn') !== 'true') {
-                alert("Sie müssen sich anmelden, um auf diese Seite zugreifen zu können.");
-                window.location.href = "index.html";
-            // Pfad zur Anmeldeseite
-        }
-    });
-    </script>
     <div class="container">
         <div class="search-bar">
             <input type="text" id="query" placeholder="Suche im Web...">
@@ -175,15 +179,5 @@
         <a href="ms-word:ofe|u|https://www.office.com/">Libre Office</a>
         <a href="admin_authentication.html">Admin control</a>
     </div>
-    <script>
-        function searchWeb() {
-            const query = document.getElementById("query").value;
-            if (query) {
-                window.open("https://www.google.com/search?q=" + encodeURIComponent(query), "_blank");
-            } else {
-                alert("Bitte geben Sie einen Suchbegriff ein.");
-            }
-        }
-    </script>
 </body>
 </html>
