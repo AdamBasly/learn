@@ -6,8 +6,22 @@ https://adambasly.github.io/learn/
 If you're using this site, please start launching at index.html,
 because there could be errors.
 
+Windows
+-----------------------------
+Start learningservicesrepostarterx64.exe or learningservicesrepostarterx32.exe in
+"C:\Program Files (x86)\learningservicesrepo\PainterProject"
+
+Linux (Debian or Ubuntu based)
+-----------------------------------
+Start index.html in $DESTDIR/usr/local/bin/project .
+
+MacOS
+----------------------------
+Launch index.html from your installation path.
+
 Install Guide:
 --------------------------------------
+Please use the setup type that matches your os.
 
 run:
 
@@ -20,6 +34,7 @@ cd Path/to/cloned/directory
 cd
 
 rm -r learn
+
 
 or
 
