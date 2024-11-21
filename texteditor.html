@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Texteditor</title>
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
+    <title>Erweiterter Texteditor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&family=Arial:wght@400;700&family=Times+New+Roman:wght@400;700&family=Courier+New:wght@400;700&family=Roboto:wght@400;700&family=Lobster:wght@400;700&family=Montserrat:wght@400;700&family=Georgia:wght@400;700&family=Verdana:wght@400;700&family=Tahoma:wght@400;700&family=Trebuchet+MS:wght@400;700&family=Comic+Sans+MS:wght@400;700&family=Garamond:wght@400;700&family=Impact:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Ubuntu', sans-serif;
@@ -26,7 +26,7 @@
             font-size: 16px;
             resize: none;
         }
-        button {
+        button, select, input[type="color"] {
             margin: 5px;
             padding: 10px 20px;
             border: none;
@@ -36,27 +36,120 @@
             cursor: pointer;
             font-size: 16px;
         }
-        button:hover {
+        button:hover, select:hover, input[type="color"]:hover {
             background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-    <h1>Einfacher Texteditor</h1>
+    <h1>Erweiterter Texteditor</h1>
+    <div>
+        <button onclick="changeFont('Arial')">Arial</button>
+        <button onclick="changeFont('Times New Roman')">Times New Roman</button>
+        <button onclick="changeFont('Courier New')">Courier New</button>
+        <button onclick="changeFont('Ubuntu')">Ubuntu</button>
+        <button onclick="changeFont('Roboto')">Roboto</button>
+        <button onclick="changeFont('Lobster')">Lobster</button>
+        <button onclick="changeFont('Montserrat')">Montserrat</button>
+        <button onclick="changeFont('Georgia')">Georgia</button>
+        <button onclick="changeFont('Verdana')">Verdana</button>
+        <button onclick="changeFont('Tahoma')">Tahoma</button>
+        <button onclick="changeFont('Trebuchet MS')">Trebuchet MS</button>
+        <button onclick="changeFont('Comic Sans MS')">Comic Sans MS</button>
+        <button onclick="changeFont('Garamond')">Garamond</button>
+        <button onclick="changeFont('Impact')">Impact</button>
+        <select onchange="changeFontSize(this.value)">
+            <option value="16px">16px</option>
+            <option value="18px">18px</option>
+            <option value="20px">20px</option>
+            <option value="24px">24px</option>
+            <option value="28px">28px</option>
+            <option value="32px">32px</option>
+        </select>
+        <input type="color" onchange="changeFontColor(this.value)">
+    </div>
     <textarea id="editor" placeholder="Geben Sie hier Ihren Text ein..."></textarea>
     <div>
-        <button onclick="saveFile()">Datei speichern</button>
+        <button onclick="saveFile('txt')">Als .txt-Datei speichern</button>
+        <button onclick="saveFile('json')">Als .json-Datei speichern</button>
+        <button onclick="saveDocFile()">Als .doc-Datei speichern</button>
+        <button onclick="savePdfFile()">Als .pdf-Datei speichern</button>
         <input type="file" id="fileInput" style="display: none;" onchange="openFile(event)">
         <button onclick="document.getElementById('fileInput').click()">Datei öffnen</button>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
     <script>
-        function saveFile() {
+        function changeFont(font) {
+            document.getElementById('editor').style.fontFamily = font;
+        }
+
+        function changeFontSize(size) {
+            document.getElementById('editor').style.fontSize = size;
+        }
+
+        function changeFontColor(color) {
+            document.getElementById('editor').style.color = color;
+        }
+
+        function saveFile(type) {
             const text = document.getElementById('editor').value;
-            const blob = new Blob([text], { type: 'text/plain' });
+            let blob;
+            if (type === 'txt') {
+                blob = new Blob([text], { type: 'text/plain' });
+            } else if (type === 'json') {
+                const font = document.getElementById('editor').style.fontFamily;
+                const fontSize = document.getElementById('editor').style.fontSize;
+                const fontColor = document.getElementById('editor').style.color;
+                const content = { text, font, fontSize, fontColor };
+                blob = new Blob([JSON.stringify(content, null, 2)], { type: 'application/json' });
+            }
             const anchor = document.createElement('a');
             anchor.href = URL.createObjectURL(blob);
-            anchor.download = 'textdatei.txt';
+            anchor.download = `textdatei.${type}`;
             anchor.click();
+        }
+
+        function saveDocFile() {
+            const text = document.getElementById('editor').value;
+            const font = document.getElementById('editor').style.fontFamily;
+            const fontSize = document.getElementById('editor').style.fontSize;
+            const fontColor = document.getElementById('editor').style.color;
+            const content = `
+                <html>
+                <head>
+                    <style>
+                        body {
+                            font-family: ${font};
+                            font-size: ${fontSize};
+                            color: ${fontColor};
+                        }
+                    </style>
+                </head>
+                <body>
+                    ${text.replace(/\n/g, '<br>')}
+                </body>
+                </html>
+            `;
+            const blob = new Blob(['\ufeff', content], { type: 'application/msword' });
+            const anchor = document.createElement('a');
+            anchor.href = URL.createObjectURL(blob);
+            anchor.download = 'textdatei.doc';
+            anchor.click();
+        }
+
+        function savePdfFile() {
+            const text = document.getElementById('editor').value;
+            const font = document.getElementById('editor').style.fontFamily || 'Helvetica';
+            const fontSize = document.getElementById('editor').style.fontSize || '16px';
+            const fontColor = document.getElementById('editor').style.color || '#000000';
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.setFont(font);
+            doc.setFontSize(parseInt(fontSize));
+            doc.setTextColor(fontColor);
+            const lines = doc.splitTextToSize(text, 180);
+            doc.text(lines, 10, 10);
+            doc.save('textdatei.pdf');
         }
 
         function openFile(event) {
@@ -66,7 +159,15 @@
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    document.getElementById('editor').value = e.target.result;
+                    if (file.type === 'application/json') {
+                        const content = JSON.parse(e.target.result);
+                        document.getElementById('editor').value = content.text;
+                        document.getElementById('editor').style.fontFamily = content.font;
+                        document.getElementById('editor').style.fontSize = content.fontSize;
+                        document.getElementById('editor').style.color = content.fontColor;
+                    } else {
+                        document.getElementById('editor').value = e.target.result;
+                    }
                 };
                 reader.readAsText(file);
             }
