@@ -7,7 +7,8 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            background: url('./img/mc_background.png') no-repeat center center fixed;
+            background-size: contain; /* Ändere 'cover' zu 'contain' */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -29,9 +30,9 @@
             text-decoration: none;
         }
 
-            #connection:hover {
-                background-color: #54d300;
-            }
+        #connection:hover {
+            background-color: #54d300;
+        }
 
         .container {
             background-color: #fff;
@@ -42,37 +43,37 @@
             text-align: center;
         }
 
-            .container h2 {
-                margin-bottom: 20px;
-                font-size: 24px;
-                color: #333;
-            }
+        .container h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
 
-            .container input {
-                width: 100%;
-                padding: 15px;
-                margin: 10px 0;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-                font-size: 16px;
-            }
+        .container input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
 
-            .container button {
-                width: 100%;
-                padding: 15px;
-                background-color: #007BFF;
-                color: white;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-                font-size: 16px;
-                margin-top: 10px;
-                transition: background-color 0.3s;
-            }
+        .container button {
+            width: 100%;
+            padding: 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
 
-                .container button:hover {
-                    background-color: #0056b3;
-                }
+        .container button:hover {
+            background-color: #0056b3;
+        }
 
         #message {
             margin-top: 15px;
