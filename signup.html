@@ -4,27 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Benutzerkonto erstellen</title>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Ubuntu', sans-serif;
             background-color: #f0f0f0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            padding: 20px;
         }
         .container {
             background-color: #fff;
             padding: 30px;
             border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 350px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
             text-align: center;
         }
         .container h2 {
             margin-bottom: 20px;
-            font-size: 24px;
+            font-size: 28px;
             color: #333;
         }
         .container input, .container textarea {
@@ -45,10 +48,11 @@
             cursor: pointer;
             font-size: 16px;
             margin-top: 10px;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.3s;
         }
         .container button:hover {
             background-color: #0056b3;
+            transform: translateY(-2px);
         }
         .container a {
             display: block;
@@ -59,20 +63,28 @@
             border-radius: 5px;
             font-size: 16px;
             margin-top: 20px;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.3s;
         }
         .container a:hover {
             background-color: #c82333;
+            transform: translateY(-2px);
         }
         .container label {
             display: block;
             margin-top: 10px;
             font-size: 14px;
+            color: #555;
         }
         #message {
             margin-top: 15px;
             color: #e74c3c;
             font-size: 14px;
+        }
+        .success {
+            color: #28a745;
+        }
+        .error {
+            color: #e74c3c;
         }
     </style>
 </head>
@@ -121,8 +133,6 @@
             const termsOfService = document.getElementById('termsOfService').checked;
             const message = document.getElementById('message');
 
-            
-
             if (username && password && privacyPolicy && termsOfService) {
                 let users = JSON.parse(localStorage.getItem('users')) || {};
                 if (users[username]) {
@@ -134,7 +144,7 @@
                     localStorage.setItem('acceptedPrivacy_' + username, privacyPolicy);
                     localStorage.setItem('acceptedTerms_' + username, termsOfService);
                     notify("Konto erfolgreich erstellt!");
-                    message.textContent = 'Konto erfolgreich erstellt. <a href="index.html">Zurück zur Anmeldeseite</a>';
+                    message.innerHTML = 'Konto erfolgreich erstellt. <a href="index.html">Zurück zur Anmeldeseite</a>';
                     message.className = 'success';
                 }
             } else {
