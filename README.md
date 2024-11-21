@@ -45,7 +45,7 @@ or
 use the .exe installer: https://github.com/AdamBasly/learn/blob/2eb2a2e1ea1e54cf0d94268d79336df58a0bd023/learningservicesrepo.exe
 
 and click on the download icon
-(Only v1.0.2)
+(Only v1.0.2.1)
 
 or
 
