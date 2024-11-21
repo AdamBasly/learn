@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('../img/mc_background.png') no-repeat center center fixed;
+            background-size: contain; /* Change 'cover' to 'contain' */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+        }
+
+        .container h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .container input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .container button {
+            width: 100%;
+            padding: 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .container button:hover {
+            background-color: #0056b3;
+        }
+
+        #message {
+            margin-top: 15px;
+            color: #e74c3c;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <a href="sign_up_en.html" id="connection">No account yet?</a>
+        <br><br>
+        <form onsubmit="return startLogin()">
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+        <p id="message"></p>
+    </div>
+
+    <div class="container" id="verificationContainer" style="display: none;">
+        <h2>Verification Code</h2>
+        <form onsubmit="return verifyCode()">
+            <input type="text" id="verificationCode" placeholder="Verification Code" required>
+            <button type="submit">Verify</button>
+        </form>
+        <p id="verificationMessage"></p>
+    </div>
+
+    <script>
+        let userEmail = '';
+
+        function sendVerificationCode(email) {
+            const verificationCode = Math.floor(100000 + Math.random() * 900000);
+            sessionStorage.setItem('verificationCode', verificationCode);
+
+            // Debug: Display code in console
+            console.log(`Verification code: ${verificationCode}`);
+            alert(`Verification code: ${verificationCode}`); // Temporarily use alert for testing
+        }
+
+        function startLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const message = document.getElementById('message');
+
+            let users = JSON.parse(localStorage.getItem('users')) || {};
+            if (users[username] && users[username].password === password) {
+                userEmail = users[username].email; // Assuming email is stored during registration
+                sendVerificationCode(userEmail);
+                document.querySelector('form').style.display = 'none';
+                document.getElementById('verificationContainer').style.display = 'block';
+                return false; // Prevent form submission
+            } else {
+                message.textContent = 'Invalid username or password. Please try again.';
+                return false;
+            }
+        }
+
+        function verifyCode() {
+            const enteredCode = document.getElementById('verificationCode').value;
+            const storedCode = sessionStorage.getItem('verificationCode');
+            const verificationMessage = document.getElementById('verificationMessage');
+
+            if (enteredCode === storedCode) {
+                sessionStorage.setItem('isLoggedIn', 'true'); // Save login status
+                window.location.href = "./mainlab_en.html";
+                return false; // Prevent form submission
+            } else {
+                verificationMessage.textContent = 'Invalid verification code. Please try again.';
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>
