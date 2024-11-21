@@ -16,24 +16,6 @@
             margin: 0;
         }
 
-        #connection {
-            width: 100%;
-            padding: 15px;
-            background-color: #00ff22;
-            color: rgb(1, 138, 148);
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 10px;
-            transition: background-color 0.3s;
-            text-decoration: none;
-        }
-
-        #connection:hover {
-            background-color: #54d300;
-        }
-
         .container {
             background-color: #fff;
             padding: 30px;
@@ -80,10 +62,41 @@
             color: #e74c3c;
             font-size: 14px;
         }
+
+        .language-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .language-container button {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .language-container button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div id="languageSelection" class="language-container">
+        <h2>Choose your language</h2>
+        <button onclick="selectLanguage('de')">Deutsch</button>
+        <button onclick="selectLanguage('en')">English</button>
+    </div>
+
+    <div id="loginContainer" class="container" style="display: none;">
         <h2>Anmelden</h2>
         <a href="signup.html" id="connection">Noch kein Konto?</a>
         <br><br>
@@ -95,8 +108,7 @@
         <p id="message"></p>
     </div>
 
-    <!-- Zwei-Schritt-Authentifizierung -->
-    <div class="container" id="verificationContainer" style="display: none;">
+    <div id="verificationContainer" class="container" style="display: none;">
         <h2>Bestätigungscode</h2>
         <form onsubmit="return verifyCode()">
             <input type="text" id="verificationCode" placeholder="Bestätigungscode" required>
@@ -106,6 +118,15 @@
     </div>
 
     <script>
+        function selectLanguage(language) {
+            if (language === 'de') {
+                document.getElementById('languageSelection').style.display = 'none';
+                document.getElementById('loginContainer').style.display = 'block';
+            } else if (language === 'en') {
+                window.location.href = './en/en.html'; // Link zur englischen Version
+            }
+        }
+
         let userEmail = '';
 
         function sendVerificationCode(email) {
