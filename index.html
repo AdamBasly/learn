@@ -87,6 +87,37 @@
         .language-container button:hover {
             background-color: #0056b3;
         }
+
+        .quick-access {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .quick-access-item {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .quick-access img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+
+        .quick-access img:hover {
+            transform: scale(1.1);
+        }
+
+        .quick-access span {
+            font-size: 16px;
+            color: #333;
+        }
     </style>
 </head>
 <body>
@@ -106,6 +137,7 @@
             <button type="submit">Anmelden</button>
         </form>
         <p id="message"></p>
+        <div class="quick-access" id="quickAccessContainer"></div>
     </div>
 
     <div id="verificationContainer" class="container" style="display: none;">
@@ -122,6 +154,7 @@
             if (language === 'de') {
                 document.getElementById('languageSelection').style.display = 'none';
                 document.getElementById('loginContainer').style.display = 'block';
+                loadQuickAccessIcons();
             } else if (language === 'en') {
                 window.location.href = './en/en.html'; // Link zur englischen Version
             }
@@ -147,6 +180,9 @@
             if (users[username] && users[username].password === password) {
                 userEmail = users[username].email; // Vorausgesetzt, die E-Mail wird bei der Registrierung gespeichert
                 sendVerificationCode(userEmail);
+                if (confirm('Möchten Sie ein Schnellzugriffs-Icon für dieses Konto speichern?')) {
+                    saveQuickAccessIcon(username);
+                }
                 document.querySelector('form').style.display = 'none';
                 document.getElementById('verificationContainer').style.display = 'block';
                 return false; // Verhindert das Absenden des Formulars
@@ -170,6 +206,45 @@
                 return false;
             }
         }
+
+        function saveQuickAccessIcon(username) {
+            let quickAccess = JSON.parse(localStorage.getItem('quickAccess')) || [];
+            if (!quickAccess.includes(username)) {
+                quickAccess.push(username);
+                localStorage.setItem('quickAccess', JSON.stringify(quickAccess));
+            }
+        }
+
+        function loadQuickAccessIcons() {
+            let quickAccess = JSON.parse(localStorage.getItem('quickAccess')) || [];
+            const quickAccessContainer = document.getElementById('quickAccessContainer');
+            quickAccessContainer.innerHTML = '';
+            quickAccess.forEach(username => {
+                const div = document.createElement('div');
+                div.className = 'quick-access-item';
+                const img = document.createElement('img');
+                img.src = './img/mc_background.png'; // Pfad zum Standard-Icon
+                img.alt = username;
+                img.onclick = () => quickLogin(username);
+                const span = document.createElement('span');
+                span.textContent = username;
+                div.appendChild(img);
+                div.appendChild(span);
+                quickAccessContainer.appendChild(div);
+            });
+        }
+
+        function quickLogin(username) {
+            let users = JSON.parse(localStorage.getItem('users')) || {};
+            if (users[username]) {
+                document.getElementById('username').value = username;
+                document.getElementById('password').value = users[username].password;
+                startLogin();
+            }
+        }
+
+        // Lade Schnellzugriffs-Icons beim Laden der Seite
+        document.addEventListener('DOMContentLoaded', loadQuickAccessIcons);
     </script>
 </body>
 </html>
