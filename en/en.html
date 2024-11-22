@@ -62,6 +62,37 @@
             color: #e74c3c;
             font-size: 14px;
         }
+
+        .quick-access {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .quick-access-item {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .quick-access img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+
+        .quick-access img:hover {
+            transform: scale(1.1);
+        }
+
+        .quick-access span {
+            font-size: 16px;
+            color: #333;
+        }
     </style>
 </head>
 <body>
@@ -75,6 +106,7 @@
             <button type="submit">Login</button>
         </form>
         <p id="message"></p>
+        <div class="quick-access" id="quickAccessContainer"></div>
     </div>
 
     <div class="container" id="verificationContainer" style="display: none;">
@@ -107,6 +139,9 @@
             if (users[username] && users[username].password === password) {
                 userEmail = users[username].email; // Assuming email is stored during registration
                 sendVerificationCode(userEmail);
+                if (confirm('Would you like to save a quick access icon for this account?')) {
+                    saveQuickAccessIcon(username);
+                }
                 document.querySelector('form').style.display = 'none';
                 document.getElementById('verificationContainer').style.display = 'block';
                 return false; // Prevent form submission
@@ -130,6 +165,45 @@
                 return false;
             }
         }
+
+        function saveQuickAccessIcon(username) {
+            let quickAccess = JSON.parse(localStorage.getItem('quickAccess')) || [];
+            if (!quickAccess.includes(username)) {
+                quickAccess.push(username);
+                localStorage.setItem('quickAccess', JSON.stringify(quickAccess));
+            }
+        }
+
+        function loadQuickAccessIcons() {
+            let quickAccess = JSON.parse(localStorage.getItem('quickAccess')) || [];
+            const quickAccessContainer = document.getElementById('quickAccessContainer');
+            quickAccessContainer.innerHTML = '';
+            quickAccess.forEach(username => {
+                const div = document.createElement('div');
+                div.className = 'quick-access-item';
+                const img = document.createElement('img');
+                img.src = '../img/mc_background.png'; // Path to the default icon
+                img.alt = username;
+                img.onclick = () => quickLogin(username);
+                const span = document.createElement('span');
+                span.textContent = username;
+                div.appendChild(img);
+                div.appendChild(span);
+                quickAccessContainer.appendChild(div);
+            });
+        }
+
+        function quickLogin(username) {
+            let users = JSON.parse(localStorage.getItem('users')) || {};
+            if (users[username]) {
+                document.getElementById('username').value = username;
+                document.getElementById('password').value = users[username].password;
+                startLogin();
+            }
+        }
+
+        // Load quick access icons when the page loads
+        document.addEventListener('DOMContentLoaded', loadQuickAccessIcons);
     </script>
 </body>
 </html>
