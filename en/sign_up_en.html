@@ -121,10 +121,6 @@
             }
         }
 
-        function isStrongPassword(password) {
-            const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-            return regex.test(password);
-        }
 
         function createAccount() {
             const username = document.getElementById('username').value;
@@ -144,7 +140,7 @@
                     localStorage.setItem('acceptedPrivacy_' + username, privacyPolicy);
                     localStorage.setItem('acceptedTerms_' + username, termsOfService);
                     notify("Account created successfully!");
-                    message.innerHTML = 'Account created successfully. <a href="index.html">Back to Login Page</a>';
+                    message.innerHTML = 'Account created successfully. <a href="../index.html">Back to Login Page</a>';
                     message.className = 'success';
                 }
             } else {
