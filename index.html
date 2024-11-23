@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <script src="https://www.google.com/recaptcha/api.js?render=6LczuocqAAAAABNgINCGJoOz-NxH1CHlKYHjjG7G"></script>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anmeldeseite</title>
@@ -179,31 +179,28 @@
         function startLogin() {
             
 
-            e.preventDefault();
-            grecaptcha.ready(function() {
-                grecaptcha.execute('6LczuocqAAAAABNgINCGJoOz-NxH1CHlKYHjjG7G', {action: 'submit'}).then(function(token) {
-                    const username = document.getElementById('username').value;
-                    const password = document.getElementById('password').value;
-                    const message = document.getElementById('message');
-                    
-                    
-                    let users = JSON.parse(localStorage.getItem('users')) || {};
-                    if (users[username] && users[username].password === password) {
-                        userEmail = users[username].email; // Vorausgesetzt, die E-Mail wird bei der Registrierung gespeichert
-                        sendVerificationCode(userEmail);
-                        if (confirm('Möchten Sie ein Schnellzugriffs-Icon für dieses Konto speichern?')) {
-                            saveQuickAccessIcon(username);
-                        }
-                        document.querySelector('form').style.display = 'none';
-                        document.getElementById('verificationContainer').style.display = 'block';
-                        return false; // Verhindert das Absenden des Formulars
-                    } else {
-                        message.textContent = 'Ungültiger Benutzername oder Passwort. Bitte versuchen Sie es erneut.';
-                        return false;
-                    }
-                    // Add your logic to submit to your backend server here.
-                });
-            });
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const message = document.getElementById('message');
+            
+            
+            let users = JSON.parse(localStorage.getItem('users')) || {};
+            if (users[username] && users[username].password === password) {
+                userEmail = users[username].email; // Vorausgesetzt, die E-Mail wird bei der Registrierung gespeichert
+                sendVerificationCode(userEmail);
+                if (confirm('Möchten Sie ein Schnellzugriffs-Icon für dieses Konto speichern?')) {
+                    saveQuickAccessIcon(username);
+                }
+                document.querySelector('form').style.display = 'none';
+                document.getElementById('verificationContainer').style.display = 'block';
+                return false; // Verhindert das Absenden des Formulars
+            } else {
+                message.textContent = 'Ungültiger Benutzername oder Passwort. Bitte versuchen Sie es erneut.';
+                return false;
+            }
+            // Add your logic to submit to your backend server here.
+        
             
         }
 
