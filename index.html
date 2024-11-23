@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anmeldeseite</title>
@@ -134,10 +135,12 @@
         <form onsubmit="return startLogin()">
             <input type="text" id="username" placeholder="Benutzername" required>
             <input type="password" id="password" placeholder="Passwort" required>
+            <div class="g-recaptcha" data-sitekey="6LczuocqAAAAAGr08KbZqWs5dUh5l7zpMAQwtYTx"></div> <!-- Hier ist das Widget -->
             <button type="submit">Anmelden</button>
         </form>
         <p id="message"></p>
         <div class="quick-access" id="quickAccessContainer"></div>
+
     </div>
 
     <div id="verificationContainer" class="container" style="display: none;">
@@ -175,7 +178,12 @@
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             const message = document.getElementById('message');
+            const recaptchaResponse = grecaptcha.getResponse();
+            if (recaptchaResponse.length === 0) {
+                message.textContent = 'Bitte bestätigen Sie, dass Sie kein Roboter sind.'; 
+                return false; 
 
+            }
             let users = JSON.parse(localStorage.getItem('users')) || {};
             if (users[username] && users[username].password === password) {
                 userEmail = users[username].email; // Vorausgesetzt, die E-Mail wird bei der Registrierung gespeichert
