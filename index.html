@@ -135,12 +135,10 @@
         <form onsubmit="return startLogin()">
             <input type="text" id="username" placeholder="Benutzername" required>
             <input type="password" id="password" placeholder="Passwort" required>
-            
             <button type="submit">Anmelden</button>
         </form>
         <p id="message"></p>
         <div class="quick-access" id="quickAccessContainer"></div>
-
     </div>
 
     <div id="verificationContainer" class="container" style="display: none;">
@@ -173,35 +171,34 @@
             console.log(`Verification code: ${verificationCode}`);
             alert(`Verification code: ${verificationCode}`); // Temporarily use alert for testing
         }
-        
-      
- 
-        function startLogin() {
-            
 
-            
+        function startLogin() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             const message = document.getElementById('message');
             
-            
             let users = JSON.parse(localStorage.getItem('users')) || {};
-            if (users[username] && users[username].password === password) {
-                userEmail = users[username].email; // Vorausgesetzt, die E-Mail wird bei der Registrierung gespeichert
-                sendVerificationCode(userEmail);
-                if (confirm('Möchten Sie ein Schnellzugriffs-Icon für dieses Konto speichern?')) {
-                    saveQuickAccessIcon(username);
+            if (users[username]) {
+                const storedPassword = atob(users[username].password); // Base64 decode
+                if (password === storedPassword) {
+                    userEmail = users[username].email; // Vorausgesetzt, die E-Mail wird bei der Registrierung gespeichert
+                    sendVerificationCode(userEmail);
+                    if (confirm('Möchten Sie ein Schnellzugriffs-Icon für dieses Konto speichern?')) {
+                        saveQuickAccessIcon(username);
+                    }
+                    document.querySelector('form').style.display = 'none';
+                    document.getElementById('verificationContainer').style.display = 'block';
+                    return false; // Verhindert das Absenden des Formulars
+                } else {
+                    message.textContent = 'Ungültiger Benutzername oder Passwort. Bitte versuchen Sie es erneut.';
+                    message.className = 'error';
+                    return false;
                 }
-                document.querySelector('form').style.display = 'none';
-                document.getElementById('verificationContainer').style.display = 'block';
-                return false; // Verhindert das Absenden des Formulars
             } else {
-                message.textContent = 'Ungültiger Benutzername oder Passwort. Bitte versuchen Sie es erneut.';
+                message.textContent = 'Benutzer nicht gefunden.';
+                message.className = 'error';
                 return false;
             }
-            // Add your logic to submit to your backend server here.
-        
-            
         }
 
         function verifyCode() {
@@ -250,7 +247,7 @@
             let users = JSON.parse(localStorage.getItem('users')) || {};
             if (users[username]) {
                 document.getElementById('username').value = username;
-                document.getElementById('password').value = users[username].password;
+                document.getElementById('password').value = atob(users[username].password); // Base64 decode
                 startLogin();
             }
         }
