@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anmeldeseite</title>
@@ -135,12 +135,10 @@
         <form onsubmit="return startLogin()">
             <input type="text" id="username" placeholder="Benutzername" required>
             <input type="password" id="password" placeholder="Passwort" required>
-            <div class="g-recaptcha" data-sitekey="6LczuocqAAAAAGr08KbZqWs5dUh5l7zpMAQwtYTx"></div> <!-- Hier ist das Widget -->
             <button type="submit">Anmelden</button>
         </form>
         <p id="message"></p>
         <div class="quick-access" id="quickAccessContainer"></div>
-
     </div>
 
     <div id="verificationContainer" class="container" style="display: none;">
@@ -178,24 +176,27 @@
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             const message = document.getElementById('message');
-            const recaptchaResponse = grecaptcha.getResponse();
-            if (recaptchaResponse.length === 0) {
-                message.textContent = 'Bitte bestätigen Sie, dass Sie kein Roboter sind.'; 
-                return false; 
-
-            }
+            
             let users = JSON.parse(localStorage.getItem('users')) || {};
-            if (users[username] && users[username].password === password) {
-                userEmail = users[username].email; // Vorausgesetzt, die E-Mail wird bei der Registrierung gespeichert
-                sendVerificationCode(userEmail);
-                if (confirm('Möchten Sie ein Schnellzugriffs-Icon für dieses Konto speichern?')) {
-                    saveQuickAccessIcon(username);
+            if (users[username]) {
+                const storedPassword = atob(users[username].password); // Base64 decode
+                if (password === storedPassword) {
+                    userEmail = users[username].email; // Vorausgesetzt, die E-Mail wird bei der Registrierung gespeichert
+                    sendVerificationCode(userEmail);
+                    if (confirm('Möchten Sie ein Schnellzugriffs-Icon für dieses Konto speichern?')) {
+                        saveQuickAccessIcon(username);
+                    }
+                    document.querySelector('form').style.display = 'none';
+                    document.getElementById('verificationContainer').style.display = 'block';
+                    return false; // Verhindert das Absenden des Formulars
+                } else {
+                    message.textContent = 'Ungültiger Benutzername oder Passwort. Bitte versuchen Sie es erneut.';
+                    message.className = 'error';
+                    return false;
                 }
-                document.querySelector('form').style.display = 'none';
-                document.getElementById('verificationContainer').style.display = 'block';
-                return false; // Verhindert das Absenden des Formulars
             } else {
-                message.textContent = 'Ungültiger Benutzername oder Passwort. Bitte versuchen Sie es erneut.';
+                message.textContent = 'Benutzer nicht gefunden.';
+                message.className = 'error';
                 return false;
             }
         }
@@ -246,7 +247,7 @@
             let users = JSON.parse(localStorage.getItem('users')) || {};
             if (users[username]) {
                 document.getElementById('username').value = username;
-                document.getElementById('password').value = users[username].password;
+                document.getElementById('password').value = atob(users[username].password); // Base64 decode
                 startLogin();
             }
         }
