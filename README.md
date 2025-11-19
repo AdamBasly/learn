@@ -1,3 +1,6 @@
+### Outdated
+A new project is launching, please upgrade. We'll keep you on track until it gets released.
+
 Use
 ---------------------------------------
 Test Project:
